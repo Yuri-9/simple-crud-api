@@ -8,8 +8,8 @@
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "dev": "node src/app.js",
-    "start": "nodemon src/app.js",
+    "dev": "node src/server.js",
+    "start": "nodemon src/server.js",
     "start:prod": "npm run build && node dist/bundle.js"
   },
   "repository": {
@@ -42,5 +42,8 @@
     "webpack": "^5.64.2",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.4.0"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0"
   }
 }
