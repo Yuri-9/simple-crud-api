@@ -18,13 +18,14 @@ const server = http.createServer(async (req, res) => {
   });
 
   req.on('end', async () => {
-    const REQUEST_METHOD_NOT_SUPPORTED = {
+    const requestMethodNotSupported = {
       status: STATUS_CODE.BAD_REQUEST,
       body: `Method "${method.toUpperCase()}" is not supported`,
     };
+
     const response = router[method]
       ? await router[method](path, bodyReq)
-      : REQUEST_METHOD_NOT_SUPPORTED;
+      : requestMethodNotSupported;
     const { status, body } = response;
     res.writeHead(status, { 'Content-Type': 'application/json' }).end(body);
   });

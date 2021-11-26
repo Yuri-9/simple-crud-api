@@ -16,39 +16,6 @@ class Persons {
         hobbies: ['sky', 'football'],
       },
     ];
-    //   this.schema = {
-    //     name: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //     age: {
-    //       type: Number,
-    //       required: true,
-    //     },
-    //     hobbies: {
-    //       type: Array,
-    //       item: String,
-    //       required: true,
-    //     },
-    //   };
-    // }
-
-    // static validatePerson(object, schema) {
-    //   let errors = Object.keys(schema)
-    //     .filter((key) => {
-    //       return !schema[key](object[key]);
-    //     })
-    //     .map((key) => {
-    //       return new Error(key + ' is invalid.');
-    //     });
-
-    //   if (errors.length > 0) {
-    //     errors.forEach(function (error) {
-    //       console.log(error.message);
-    //     });
-    //   } else {
-    //     console.log('info is valid');
-    //   }
   }
 
   getPersons() {
@@ -61,28 +28,26 @@ class Persons {
   }
 
   createPerson(data) {
-    const dataNew = JSON.parse(data);
-    const currenData = {
-      name: dataNew.name,
-      age: dataNew.age,
-      hobbies: dataNew.hobbies,
+    const currentData = {
+      name: data.name,
+      age: data.age,
+      hobbies: data.hobbies,
     };
     const newPerson = {
       id: randomUUID(),
-      ...currenData,
+      ...currentData,
     };
     this.persons.push(newPerson);
     return Promise.resolve(newPerson);
   }
 
   updatePerson(id, data) {
-    const dataNew = JSON.parse(data);
     const person = this.persons.find((person) => person.id === id);
 
     if (person) {
-      person.name = dataNew.name || person.name;
-      person.age = dataNew.age || person.age;
-      person.hobbies = dataNew.hobbies || person.hobbies;
+      person.name = data.name || person.name;
+      person.age = data.age || person.age;
+      person.hobbies = data.hobbies || person.hobbies;
     }
     return Promise.resolve(person);
   }

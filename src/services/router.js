@@ -1,5 +1,7 @@
 const isUuid = require('../utils/isUuid');
 const parsePathName = require('../utils/parsePathName');
+const validateObject = require('../utils/validateObject');
+const schemaValidateParson = require('../repositories/schemaValidateParson');
 const STATUS_CODE = require('../utils/statusCode');
 const MAX_NUMBER_PATH_ITEM = 3;
 
@@ -40,8 +42,25 @@ class Router {
   async post(pathFull, data) {
     const { path, id, numberPathItem } = parsePathName(pathFull);
 
+    const objData = JSON.parse(data);
+
+    const { isValidate, resultValidate } = validateObject(objData, schemaValidateParson);
+
+    if (!isValidate) {
+      const message1 = resultValidate.notExistRequired
+        ? `Field: "${resultValidate.notExistRequired}" is missing`
+        : '';
+      const message2 = resultValidate.uncorrectedType
+        ? `Field: "${resultValidate.uncorrectedType}" is wrong type`
+        : '';
+      return {
+        status: STATUS_CODE.BAD_REQUEST,
+        body: `${STATUS_CODE.BAD_REQUEST} ${message1} ${message2}`,
+      };
+    }
+
     if (path === 'person' && !id) {
-      const newPerson = await this.persons.createPerson(data);
+      const newPerson = await this.persons.createPerson(objData);
       return { status: STATUS_CODE.OK_CREATE, body: JSON.stringify(newPerson) };
     }
 
