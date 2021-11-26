@@ -18,6 +18,39 @@ class Persons {
         hobbies: ['sky', 'football'],
       },
     ];
+    //   this.schema = {
+    //     name: {
+    //       type: String,
+    //       required: true,
+    //     },
+    //     age: {
+    //       type: Number,
+    //       required: true,
+    //     },
+    //     hobbies: {
+    //       type: Array,
+    //       item: String,
+    //       required: true,
+    //     },
+    //   };
+    // }
+
+    // static validatePerson(object, schema) {
+    //   let errors = Object.keys(schema)
+    //     .filter((key) => {
+    //       return !schema[key](object[key]);
+    //     })
+    //     .map((key) => {
+    //       return new Error(key + ' is invalid.');
+    //     });
+
+    //   if (errors.length > 0) {
+    //     errors.forEach(function (error) {
+    //       console.log(error.message);
+    //     });
+    //   } else {
+    //     console.log('info is valid');
+    //   }
   }
 
   getPersons() {
@@ -29,7 +62,7 @@ class Persons {
     return Promise.resolve(person);
   }
 
-  deleteCategory(id) {
+  deletePerson(id) {
     const personsIndex = this.persons.findIndex((person) => person.id === id);
     if (personsIndex < 0) return Promise.reject(new Error('Category not found'));
     this.persons.splice(personsIndex, 1);
