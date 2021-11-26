@@ -1,7 +1,5 @@
 const { randomUUID } = require('crypto');
 
-console.log(randomUUID());
-
 class Persons {
   constructor() {
     this.persons = [
@@ -59,6 +57,33 @@ class Persons {
 
   getPersonsById(id) {
     const person = this.persons.find((person) => person.id === id);
+    return Promise.resolve(person);
+  }
+
+  createPerson(data) {
+    const dataNew = JSON.parse(data);
+    const currenData = {
+      name: dataNew.name,
+      age: dataNew.age,
+      hobbies: dataNew.hobbies,
+    };
+    const newPerson = {
+      id: randomUUID(),
+      ...currenData,
+    };
+    this.persons.push(newPerson);
+    return Promise.resolve(newPerson);
+  }
+
+  updatePerson(id, data) {
+    const dataNew = JSON.parse(data);
+    const person = this.persons.find((person) => person.id === id);
+
+    if (person) {
+      person.name = dataNew.name || person.name;
+      person.age = dataNew.age || person.age;
+      person.hobbies = dataNew.hobbies || person.hobbies;
+    }
     return Promise.resolve(person);
   }
 
