@@ -6,11 +6,12 @@ const path = require('path');
 const isProduction = process.env.NODE_ENV == 'production';
 
 const config = {
-  entry: './src/app.js',
+  entry: './src/server.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
+  target: 'node',
   plugins: [new CleanWebpackPlugin()],
   module: {},
 };

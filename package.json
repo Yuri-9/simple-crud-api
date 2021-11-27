@@ -10,7 +10,8 @@
     "build:prod": "webpack --mode=production --node-env=production",
     "dev": "node src/server.js",
     "start": "nodemon src/server.js",
-    "start:prod": "npm run build && node dist/bundle.js"
+    "start:dev": "npm run build && node dist/bundle.js",
+    "start:prod": "npm run build:dev && node dist/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,11 @@
     "api",
     "server"
   ],
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "author": "Yuri-9",
   "license": "ISC",
   "bugs": {
