@@ -11,8 +11,8 @@
     "build:prod": "webpack --mode=production --node-env=production",
     "dev": "node src/server.js",
     "start": "nodemon src/server.js",
-    "start:dev": "npm run build && node dist/bundle.js",
-    "start:prod": "npm run build:dev && node dist/bundle.js"
+    "start:dev": "npm run build:dev && node dist/bundle.js",
+    "start:prod": "npm run build:prod && node dist/bundle.js"
   },
   "repository": {
     "type": "git",
