@@ -26,7 +26,7 @@ class Router {
       const foundPerson = await this.persons.getPersonsById(id);
 
       if (!foundPerson) {
-        return { status: STATUS_CODE.NOT_FOUND, body: `Person with ${id} is not found` };
+        return { status: STATUS_CODE.NOT_FOUND, body: `Person with id: "${id}" is not found` };
       }
 
       if (foundPerson) {
@@ -75,6 +75,8 @@ class Router {
   async put(pathFull, data) {
     const { path, id, numberPathItem } = parsePathName(pathFull);
 
+    const objData = JSON.parse(data);
+
     if (numberPathItem > MAX_NUMBER_PATH_ITEM || path !== 'person' || !id) {
       return {
         status: STATUS_CODE.NOT_FOUND,
@@ -94,7 +96,7 @@ class Router {
       }
 
       if (foundPerson) {
-        const updatedPerson = await this.persons.updatePerson(id, data);
+        const updatedPerson = await this.persons.updatePerson(id, objData);
         return { status: STATUS_CODE.OK, body: JSON.stringify(updatedPerson) };
       }
     }
@@ -111,6 +113,11 @@ class Router {
     }
 
     if (path === 'person' && id) {
+      if (id === 'all') {
+        await this.persons.deleteAllPersons();
+        return { status: STATUS_CODE.OK_DELETE, body: `Delete all person` };
+      }
+
       if (!isUuid(id)) {
         return { status: STATUS_CODE.BAD_REQUEST, body: `Id "${id}" is not validate` };
       }
