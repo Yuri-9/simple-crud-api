@@ -2,20 +2,7 @@ const { randomUUID } = require('crypto');
 
 class Persons {
   constructor() {
-    this.persons = [
-      // {
-      //   id: '07fcec76-02aa-465f-92e4-419be17e91cb',
-      //   name: 'Yra1',
-      //   age: 19,
-      //   hobbies: ['sky', 'football', 'bike'],
-      // },
-      // {
-      //   id: '07fcec76-02aa-465f-92e4-419be17e92cb',
-      //   name: 'Yra2',
-      //   age: 21,
-      //   hobbies: ['sky', 'football'],
-      // },
-    ];
+    this.persons = [];
   }
 
   getPersons() {

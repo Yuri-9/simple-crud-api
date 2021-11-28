@@ -2,6 +2,12 @@ const fetch = require('cross-fetch');
 
 const baseUrl = 'http://localhost:3000';
 
+beforeAll(async () => {
+  await fetch(`${baseUrl}/person/all`, {
+    method: 'DELETE',
+  });
+});
+
 const person = {
   name: 'Yra',
   age: 19,

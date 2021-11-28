@@ -46,42 +46,73 @@ class Router {
   }
 
   async post(pathFull, data) {
+    try {
+      if (!data) {
+        return {
+          status: STATUS_CODE.BAD_REQUEST,
+          body: `${STATUS_CODE.BAD_REQUEST} Body of request is missing`,
+        };
+      }
+      const { path, id, numberPathItem } = parsePathName(pathFull);
+
+      const objData = JSON.parse(data);
+
+      const { isValidate, resultValidate } = validateObject(objData, schemaValidateParson);
+
+      if (!isValidate) {
+        const message1 = resultValidate.notExistRequired
+          ? `Field: "${resultValidate.notExistRequired}" is missing`
+          : '';
+        const message2 = resultValidate.uncorrectedType
+          ? `Field: "${resultValidate.uncorrectedType}" is wrong type`
+          : '';
+        return {
+          status: STATUS_CODE.BAD_REQUEST,
+          body: `${STATUS_CODE.BAD_REQUEST} ${message1} ${message2}`,
+        };
+      }
+
+      if (path === 'person' && !id) {
+        const newPerson = await this.persons.createPerson(objData);
+        return { status: STATUS_CODE.OK_CREATE, body: JSON.stringify(newPerson) };
+      }
+
+      if (numberPathItem > MAX_NUMBER_PATH_ITEM || path !== 'person' || id) {
+        return {
+          status: STATUS_CODE.NOT_FOUND,
+          body: `${STATUS_CODE.NOT_FOUND}. Url ${pathFull} is not found`,
+        };
+      }
+    } catch (e) {
+      return {
+        status: STATUS_CODE.SERVER_ERROR,
+        body: `${STATUS_CODE.SERVER_ERROR} Internal Server Error`,
+      };
+    }
+  }
+
+  async put(pathFull, data) {
+    if (!data) {
+      return {
+        status: STATUS_CODE.BAD_REQUEST,
+        body: `${STATUS_CODE.BAD_REQUEST} Body of request is missing`,
+      };
+    }
     const { path, id, numberPathItem } = parsePathName(pathFull);
 
     const objData = JSON.parse(data);
 
     const { isValidate, resultValidate } = validateObject(objData, schemaValidateParson);
 
-    if (!isValidate) {
-      const message1 = resultValidate.notExistRequired
-        ? `Field: "${resultValidate.notExistRequired}" is missing`
-        : '';
+    if (!isValidate && resultValidate.uncorrectedType) {
       const message2 = resultValidate.uncorrectedType
         ? `Field: "${resultValidate.uncorrectedType}" is wrong type`
         : '';
       return {
         status: STATUS_CODE.BAD_REQUEST,
-        body: `${STATUS_CODE.BAD_REQUEST} ${message1} ${message2}`,
+        body: `${STATUS_CODE.BAD_REQUEST} ${message2}`,
       };
     }
-
-    if (path === 'person' && !id) {
-      const newPerson = await this.persons.createPerson(objData);
-      return { status: STATUS_CODE.OK_CREATE, body: JSON.stringify(newPerson) };
-    }
-
-    if (numberPathItem > MAX_NUMBER_PATH_ITEM || path !== 'person' || id) {
-      return {
-        status: STATUS_CODE.NOT_FOUND,
-        body: `${STATUS_CODE.NOT_FOUND}. Url ${pathFull} is not found`,
-      };
-    }
-  }
-
-  async put(pathFull, data) {
-    const { path, id, numberPathItem } = parsePathName(pathFull);
-
-    const objData = JSON.parse(data);
 
     if (numberPathItem > MAX_NUMBER_PATH_ITEM || path !== 'person' || !id) {
       return {
