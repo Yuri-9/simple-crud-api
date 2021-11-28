@@ -10,25 +10,36 @@ const persons = new Persons();
 const router = new Router(persons);
 
 const server = http.createServer(async (req, res) => {
-  const method = req.method.toLowerCase();
-  const path = req.url;
-  let bodyReq = '';
-  req.on('data', (chunk) => {
-    bodyReq += chunk.toString();
-  });
+  try {
+    const method = req.method.toLowerCase();
+    const path = req.url;
+    let bodyReq = '';
+    req.on('data', (chunk) => {
+      bodyReq += chunk.toString();
+    });
 
-  req.on('end', async () => {
-    const requestMethodNotSupported = {
-      status: STATUS_CODE.BAD_REQUEST,
-      body: `Method "${method.toUpperCase()}" is not supported`,
-    };
+    req.on('end', async () => {
+      const requestMethodNotSupported = {
+        status: STATUS_CODE.BAD_REQUEST,
+        body: `Method "${method.toUpperCase()}" is not supported`,
+      };
 
-    const response = router[method]
-      ? await router[method](path, bodyReq)
-      : requestMethodNotSupported;
-    const { status, body } = response;
-    res.writeHead(status, { 'Content-Type': 'application/json' }).end(body);
-  });
+      const response = router[method]
+        ? await router[method](path, bodyReq)
+        : requestMethodNotSupported;
+      const { status, body } = response;
+      res.writeHead(status, { 'Content-Type': 'application/json' }).end(body);
+    });
+  } catch (e) {
+    req.on('end', () => {
+      const responseError = {
+        status: STATUS_CODE.SERVER_ERROR,
+        body: `${STATUS_CODE.SERVER_ERROR} Internal Server Error`,
+      };
+      const { status, body } = responseError;
+      res.writeHead(status, { 'Content-Type': 'application/json' }).end(body);
+    });
+  }
 });
 
 server.listen(port, () => {

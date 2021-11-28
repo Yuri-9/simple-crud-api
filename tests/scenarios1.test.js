@@ -87,6 +87,6 @@ describe('Scenarios 1', () => {
     const response = await fetch(`${baseUrl}/person/${id}`);
     const message = await response.text();
     expect(response.status).toEqual(404);
-    expect(message).toEqual(`Person with id: "${id}" is not found`);
+    expect(message).toEqual(`404 Person with id: "${id}" is not found`);
   });
 });

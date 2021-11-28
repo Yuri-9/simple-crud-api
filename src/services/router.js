@@ -20,13 +20,19 @@ class Router {
     }
     if (path === 'person' && id) {
       if (!isUuid(id)) {
-        return { status: STATUS_CODE.BAD_REQUEST, body: `Id "${id}" is not validate` };
+        return {
+          status: STATUS_CODE.BAD_REQUEST,
+          body: `${STATUS_CODE.BAD_REQUEST} Id "${id}" is not validate`,
+        };
       }
 
       const foundPerson = await this.persons.getPersonsById(id);
 
       if (!foundPerson) {
-        return { status: STATUS_CODE.NOT_FOUND, body: `Person with id: "${id}" is not found` };
+        return {
+          status: STATUS_CODE.NOT_FOUND,
+          body: `${STATUS_CODE.NOT_FOUND} Person with id: "${id}" is not found`,
+        };
       }
 
       if (foundPerson) {
@@ -86,13 +92,19 @@ class Router {
 
     if (path === 'person' && id) {
       if (!isUuid(id)) {
-        return { status: STATUS_CODE.BAD_REQUEST, body: `Id "${id}" is not validate` };
+        return {
+          status: STATUS_CODE.BAD_REQUEST,
+          body: `${STATUS_CODE.BAD_REQUEST} Id "${id}" is not validate`,
+        };
       }
 
       const foundPerson = await this.persons.getPersonsById(id);
 
       if (!foundPerson) {
-        return { status: STATUS_CODE.NOT_FOUND, body: `Person with id: "${id}" is not found` };
+        return {
+          status: STATUS_CODE.NOT_FOUND,
+          body: `${STATUS_CODE.NOT_FOUND} Person with id: "${id}" is not found`,
+        };
       }
 
       if (foundPerson) {
@@ -115,17 +127,26 @@ class Router {
     if (path === 'person' && id) {
       if (id === 'all') {
         await this.persons.deleteAllPersons();
-        return { status: STATUS_CODE.OK_DELETE, body: `Delete all person` };
+        return {
+          status: STATUS_CODE.OK_DELETE,
+          body: `${STATUS_CODE.OK_DELETE} Delete all person`,
+        };
       }
 
       if (!isUuid(id)) {
-        return { status: STATUS_CODE.BAD_REQUEST, body: `Id "${id}" is not validate` };
+        return {
+          status: STATUS_CODE.BAD_REQUEST,
+          body: `${STATUS_CODE.BAD_REQUEST} Id "${id}" is not validate`,
+        };
       }
 
       const foundPerson = await this.persons.getPersonsById(id);
 
       if (!foundPerson) {
-        return { status: STATUS_CODE.NOT_FOUND, body: `Person with id: "${id}" is not found` };
+        return {
+          status: STATUS_CODE.NOT_FOUND,
+          body: `${STATUS_CODE.NOT_FOUND} Person with id: "${id}" is not found`,
+        };
       }
 
       if (foundPerson) {
