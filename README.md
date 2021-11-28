@@ -4,7 +4,7 @@
   1. **Usage**:
     Before run app you need install: `npm install`
     Run app this watch: `npm run start`
-    Build and run app in development mode: `npm run start:dev`
+    Run app this watch: `npm run start:dev`
     Build and run app in production mode: `npm run start:prod`
     Run test: `npm run test`
     Run test:coverage: `npm run test:coverage`

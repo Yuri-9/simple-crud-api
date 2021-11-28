@@ -5,6 +5,7 @@ dotenv.config();
 const Persons = require('./repositories/persons');
 const Router = require('./services/Router');
 const STATUS_CODE = require('./utils/statusCode');
+const errorHandler = require('./customerError/errorHandler');
 const port = process.env.PORT;
 const persons = new Persons();
 const router = new Router(persons);
@@ -17,7 +18,6 @@ const server = http.createServer(async (req, res) => {
     req.on('data', (chunk) => {
       bodyReq += chunk.toString();
     });
-
     req.on('end', async () => {
       const requestMethodNotSupported = {
         status: STATUS_CODE.BAD_REQUEST,
@@ -30,12 +30,9 @@ const server = http.createServer(async (req, res) => {
       const { status, body } = response;
       res.writeHead(status, { 'Content-Type': 'application/json' }).end(body);
     });
-  } catch (e) {
+  } catch (err) {
     req.on('end', () => {
-      const responseError = {
-        status: STATUS_CODE.SERVER_ERROR,
-        body: `${STATUS_CODE.SERVER_ERROR} Internal Server Error`,
-      };
+      const responseError = errorHandler(err);
       const { status, body } = responseError;
       res.writeHead(status, { 'Content-Type': 'application/json' }).end(body);
     });
